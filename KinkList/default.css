@@ -1,0 +1,236 @@
+:root {
+	--rating0: black;
+	--rating1: red;
+	--rating2: orange;
+	--rating3: yellow;
+	--rating4: green;
+	--rating5: blue;
+	--site-colour: purple;
+	--site-colour-second: white;
+}
+
+body {	
+	box-sizing: border-box;
+	background-color: var(--site-colour);
+	color: var(--site-colour-second);
+}
+
+*, ::before, ::after {
+	box-sizing: inherit;
+}
+
+#jsonbuilder input {
+	width: 100%;
+}
+
+dd, dt, li {
+	padding: 3px 0;
+}
+
+button {
+	border: none;
+	padding: 3px 6px;
+	margin:3px;
+	text-align: center;
+	text-decoration: none;
+	font-weight: bold;
+	display: inline-block;
+	cursor: pointer;
+	border-radius:999px;
+	color: var(--site-colour);
+	background-color: var(--site-colour-second);
+}
+
+thead, .stickytop {
+	position: sticky;
+	top: 0;
+	background-color: var(--site-colour-second);
+	color: var(--site-colour);
+	padding: 5px;
+	z-index:999999;
+}
+
+#ratingIndex, .stickybottom {
+	position: sticky;
+	bottom: 0;
+	background-color: var(--site-colour-second);
+	color: var(--site-colour);
+	padding: 5px;
+	z-index:999999;
+}
+
+#ratingIndex span {
+	display: inline-block;
+	min-width:33.3%;
+	width:33.3%;
+}
+@media (min-width: 800px) {
+	#ratingIndex span {
+		min-width:16.66%;
+		width:16.66%;
+	}
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table, table thead, table tbody {
+	min-width:100%;
+	width:100%;	
+}
+table thead tr th:first-child, table tbody tr td:first-child {
+	/* max-width: 60%; */
+    text-align: left; 
+	word-break: break-word;
+}
+
+table, td, th {
+    border: 1px solid black;
+}
+
+td, th {
+    text-align: -webkit-center; 
+	text-align: -moz-center;
+    vertical-align: middle;
+	padding: 3px;
+}
+
+#divDisplay {
+	column-count: 1;
+}
+
+#divDisplay div {
+	width: 100%;
+	padding:5px;
+	break-inside: avoid-column;
+}
+@media (min-width: 900px) {
+	#divDisplay {
+		column-count: 2;
+	}
+}
+@media (min-width: 1300px) {
+	#divDisplay {
+		column-count: 3;
+	}
+}
+
+#divDisplay input[type="radio"] {
+  display: none;
+}
+
+#divDisplay label {
+  display: table-cell;
+  background-color: lightgrey;
+  padding: 8px;
+  border-radius:50%;
+  font-family: Arial;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#divRatingEdit div {
+	margin: 5px 0;	
+}
+
+#divRatingEdit input {
+	vertical-align: middle;
+	height: 25px;
+}
+
+input[type="color"] {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background-color: transparent;
+}
+
+.ratingIndex0, .ratingIndex1, .ratingIndex2, .ratingIndex3, .ratingIndex4, .ratingIndex5 {
+	width: 15px !important;
+    min-width: 15px !important;
+    height: 15px;
+    vertical-align: middle;
+    border-radius: 50%;
+    margin: 0 0 0 5px;
+}
+
+#divDisplay input[type="radio"]:checked+label.rating0, .ratingIndex0 {
+  background-color: var(--rating0);
+}
+
+#divDisplay input[type="radio"]:checked+label.rating1, .ratingIndex1 {
+  background-color: var(--rating1);
+}
+
+#divDisplay input[type="radio"]:checked+label.rating2, .ratingIndex2 {
+  background-color: var(--rating2);
+}
+
+#divDisplay input[type="radio"]:checked+label.rating3, .ratingIndex3 {
+  background-color: var(--rating3);
+}
+
+#divDisplay input[type="radio"]:checked+label.rating4, .ratingIndex4 {
+  background-color: var(--rating4);
+}
+
+#divDisplay input[type="radio"]:checked+label.rating5, .ratingIndex5 {
+  background-color: var(--rating5);
+}
+
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip span {
+  visibility: hidden;
+  width: 160px;
+  background-color: var(--site-colour-second);
+  color: var(--site-colour);
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  border: 1px solid black;
+  word-break: break-word;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 9999999999999999;
+}
+
+.tooltip:hover span {
+  visibility: visible;
+}
+
+table tbody tr td span {
+	display: none;
+}
+table thead tr th {
+	display: table-cell;
+}
+
+@media (max-width: 600px) {
+	table thead tr th {
+		display: none;
+	}
+	#divDisplay label {
+		display:inline-block;
+		max-width: 20%;
+	}
+	table tbody tr, table tbody tr td, table thead tr:first-child th:first-child {
+		display: inline-block;
+		width: 100%;
+	}
+	table thead tr:first-child th:first-child {
+		float: left;
+		clear: left;
+		background-color: var(--site-colour-second)
+	}
+	table tbody tr td span {
+		display:inline-block;
+		width: 80%;
+	}
+}
