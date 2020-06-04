@@ -388,18 +388,18 @@ function createImage(){
 		}
 	}
 	maxyheight = maxyheight + heightunit;
-	var img = c.toDataURL("image/png");
+	//var img = c.toDataURL("image/png");
 	var canvfinal = document.createElement('canvas');
 	canvfinal.style.border = "1px solid black";
 	canvfinal.width = c.width;
 	canvfinal.height = maxyheight;
 	var ctx2 = canvfinal.getContext("2d");
 	ctx2.drawImage(c, 0 , 0);
-	img = canvfinal.toDataURL("image/png");
+	var img = canvfinal.toDataURL("image/png");
 	//divImage.innerHTML = img;
 	//divImage.appendChild(canvfinal);
 	//document.write('<img src="'+img+'"/>');
-	imgurUpload(canvfinal);
+	imgurUpload(img);
 }
 
 function imgurUpload(imagestring) {
