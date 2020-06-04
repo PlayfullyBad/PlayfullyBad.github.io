@@ -402,7 +402,7 @@ function createImage(){
 	imgurUpload(canvfinal);
 }
 
-function imgurUpload(image) {
+function imgurUpload(imagestring) {
 	var imgurClientId = '9db53e5936cd02f';
 	var resultImgur = document.getElementById("resultImgur");
 	fetch('https://api.imgur.com/3/image', {
@@ -413,7 +413,7 @@ function imgurUpload(image) {
 			'Content-type': 'application/json'//'application/x-www-form-urlencoded; charset=UTF-8'
 		},
 		body: JSON.stringify({
-			image:  image.split(',')[1],
+			image:  imagestring.split(',')[1],
 			type: 'base64'			
 		})//'foo=bar&lorem=ipsum'
 	})
