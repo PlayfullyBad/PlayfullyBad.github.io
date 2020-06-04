@@ -614,12 +614,13 @@ function loadcheckURLOptions(){
 	}
 	
 	RateItems();
-	saveRatingsNames();
 	
 		})
 		.catch(function (error) {
 			copy("Request Failed");
 		});	
+		.finally(function() { saveRatingsNames(); });
+	
 	}
 }
 
