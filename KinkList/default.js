@@ -405,7 +405,8 @@ function createImage(){
 function imgurUpload(imagestring) {
 	var imgurClientId = '9db53e5936cd02f';
 	var resultImgur = document.getElementById("resultImgur");
-	fetch('https://api.imgur.com/3/image', {
+	const proxyurl = "https://cors-anywhere.herokuapp.com/";
+	fetch(proxyurl + 'https://api.imgur.com/3/image', {
 		method: 'post',
 		headers: {
 			'Authorization': 'Client-ID ' + imgurClientId,
