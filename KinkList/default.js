@@ -432,6 +432,18 @@ function replaceAll(str, oldstr, newstr) {
   return str.replace(new RegExp(oldstr, 'g'), newstr);
 }
 
+function pad(n){return n<10 ? '0'+n : n}
+
+function ISODateString(){
+    var d = new Date();
+	return d.getUTCFullYear()
+		+ pad(d.getUTCMonth()+1)
+		+ pad(d.getUTCDate())
+		+ pad(d.getUTCHours())
+		+ pad(d.getUTCMinutes())
+		+ pad(d.getUTCSeconds())
+}
+
 function shareOptions(){
 	var getUrl = window.location;	
 	var jsonobject = JSON.parse(document.getElementById('jsonhidden').innerHTML);
@@ -444,10 +456,37 @@ function shareOptions(){
 	if (Name == null || Name == "")	{
 		alert("Share Cancelled");
 	}
+	var idName = ISODateString() + Name;
+	const proxyurl = "https://cors-anywhere.herokuapp.com/";
+	fetch(proxyurl + 'https://script.google.com/macros/s/AKfycbztcDBVjq09BBx74UVzQ_TYxAI5cMZa7389xqBWTbL58ORmzrDa/exec', {
+		method: 'post',
+		headers: {
+			'Authorization': '',
+			'Accept': 'text/plain',
+			'Content-type': 'application/json'//'application/x-www-form-urlencoded; charset=UTF-8'
+		},
+		body: JSON.stringify({
+			id: idName,
+			survey: base64Options,
+			ratings: base64Rating,
+			colourone: document.getElementById('inpSiteColour').value.replace("#", ""),
+			colourtwo: document.getElementById('inpSiteColourSecond').value.replace("#", "")
+		})
+	})
+		//.then(json)
+		.then(response=>response.text())
+		.then(function (data) {
+			//var url = 'https://i.imgur.com/' + data.data.id + '.png';
+			copy(getUrl.protocol + "//" + getUrl.host + getUrl.pathname + "?id=" + idName);
+		})
+		.catch(function (error) {
+			copy("Request Failed");
+		});	
+	
 	//var jsongzip = lzw_encode(jsonString);
 	//var gzipsafe = replaceAll(jsongzip,"&","{{AND}}");
-	var baseUrl = getUrl.protocol + "//" + getUrl.host + getUrl.pathname + "?GroupList=" + base64Options + "&RatingList=" + base64Rating + "&Col1=" + document.getElementById('inpSiteColour').value.replace("#", "") + "&Col2=" + document.getElementById('inpSiteColourSecond').value.replace("#", "") + "&Name=" + Name;
-	copy(baseUrl);
+//	var baseUrl = "?id=" idName;
+	//copy(window.btoa(baseUrl));
 	
 	//document.getElementById("import").value = ;
 }
@@ -508,45 +547,65 @@ function lzw_decode(s) {
 
 function SwitchOptions(){
 	var slcOptionsSwitch = document.getElementById('slcOptionsSwitch');
-	//var decoded = window.atob(slcOptionsSwitch.value);
-	//var Options = JSON.parse(decoded);
-	document.getElementById('jsonhidden').innerHTML = lzw_decode(slcOptionsSwitch.value);
+	var decoded = window.atob(slcOptionsSwitch.value);
+	var Options = JSON.parse(decoded);
+	document.getElementById('jsonhidden').innerHTML = JSON.stringify(Options);
 	RateItems();
 	saveRatingsNames();	
 }
 
 function loadcheckURLOptions(){
+	
 	var urlParams = new URLSearchParams(window.location.search);
-	var myParam = urlParams.get('GroupList');
+	var myParamID = urlParams.get('id');
+	var myParam = "";
+	var myParamName = "";	
+	var myParamRating = "";
+	var myParamcol1 = "";	
+	var myParamcol2 = "";
+	if(myParamID != "" && myParamID != null){	
+	const proxyurl = "https://cors-anywhere.herokuapp.com/";
+	var url = 'https://script.google.com/macros/s/AKfycbztcDBVjq09BBx74UVzQ_TYxAI5cMZa7389xqBWTbL58ORmzrDa/exec?id=' + myParamID;
+	fetch(url)
+		.then(response=>response.json())
+		.then(function (data) {  
+			myParam = data.survey;
+			myParamName = data.id;
+			myParamRating = data.ratings;
+			myParamcol1 = data.colourone;	
+			myParamcol2 = data.colourtwo;
+	
+	
+	//var myParam = urlParams.get('GroupList');
 	var slcOptionsSwitch = document.getElementById('slcOptionsSwitch');
 	var newelem = document.createElement('option');
 	newelem.id = "optNewOption";
 	if(myParam != "" && myParam != null){		
-		//var decoded = window.atob(myParam);
-		//var Options = JSON.parse(decoded);
+		var decoded = window.atob(myParam);
+		var Options = JSON.parse(decoded);
 		
-		document.getElementById('jsonhidden').innerHTML = lzw_decode(myParam);//JSON.stringify(Options);//
+		document.getElementById('jsonhidden').innerHTML = JSON.stringify(Options);//lzw_decode(myParam);//
 		newelem.value = myParam;
 	}
-	var myParamRating = urlParams.get('RatingList');
+	//var myParamRating = urlParams.get('RatingList');
 	if(myParamRating != "" && myParamRating != null){
 		var decodedRating = window.atob(myParamRating);
 		var Ratings = JSON.parse(decodedRating);
 		document.getElementById('ratingshidden').innerHTML = JSON.stringify(Ratings);//lzw_decode(myParamRating); //
 	}
-	var myParamcol1 = urlParams.get('Col1');
+	//var myParamcol1 = urlParams.get('Col1');
 	if(myParamcol1 != "" && myParamcol1 != null){
 		var Colour1 = "#" + myParamcol1;
 		document.documentElement.style.setProperty('--site-colour', Colour1);
 		document.getElementById('inpSiteColour').value = Colour1;
 	}
-	var myParamcol2 = urlParams.get('Col2');
+	//var myParamcol2 = urlParams.get('Col2');
 	if(myParamcol2 != "" && myParamcol2 != null){
 		var Colour2 = "#" + myParamcol2;
 		document.documentElement.style.setProperty('--site-colour-second', Colour2);
 		document.getElementById('inpSiteColourSecond').value = Colour2;
 	}
-	var myParamName = urlParams.get('Name');
+	//var myParamName = urlParams.get('Name');
 	if(myParamName != "" && myParamName != null && myParam != "" && myParam != null){
 		newelem.innerHTML = myParamName;
 		slcOptionsSwitch.appendChild(newelem);
@@ -555,19 +614,27 @@ function loadcheckURLOptions(){
 	
 	RateItems();
 	saveRatingsNames();
+	
+		})
+		.catch(function (error) {
+			copy("Request Failed");
+		});	
+	}
 }
 
 function copy(text) {
     var input = document.createElement('input');
     input.value = text;
-    document.getElementById('CopySpan').appendChild(input);
+    var copyspan = document.getElementById('CopySpan');
+	copyspan.innerHTML = "";
+	copyspan.appendChild(input);
     input.select();
-    var result = document.execCommand('copy');
-	console.log("Copy Successful: " + result);
-	if(result){
-		document.getElementById('CopySpan').removeChild(input);		
-	}
-    return result;
+    //var result = document.execCommand('copy');
+	//console.log("Copy Successful: " + result);
+	//if(result){
+		//document.getElementById('CopySpan').removeChild(input);		
+	//}
+    //return result;
 }
 
 function editRating(){
