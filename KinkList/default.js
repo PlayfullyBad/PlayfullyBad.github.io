@@ -446,7 +446,7 @@ function shareOptions(){
 	}
 	//var jsongzip = lzw_encode(jsonString);
 	//var gzipsafe = replaceAll(jsongzip,"&","{{AND}}");
-	var baseUrl = getUrl.protocol + "//" + getUrl.host + getUrl.pathname + "?GroupList=" + lzw_encode(jsonString) + "&RatingList=" + base64Rating + "&Col1=" + document.getElementById('inpSiteColour').value.replace("#", "") + "&Col2=" + document.getElementById('inpSiteColourSecond').value.replace("#", "") + "&Name=" + Name;
+	var baseUrl = getUrl.protocol + "//" + getUrl.host + getUrl.pathname + "?GroupList=" + base64Options + "&RatingList=" + base64Rating + "&Col1=" + document.getElementById('inpSiteColour').value.replace("#", "") + "&Col2=" + document.getElementById('inpSiteColourSecond').value.replace("#", "") + "&Name=" + Name;
 	copy(baseUrl);
 	
 	//document.getElementById("import").value = ;
