@@ -565,7 +565,7 @@ function loadcheckURLOptions(){
 	var myParamRating = "";
 	var myParamcol1 = "";	
 	var myParamcol2 = "";
-	if(myParamID != "" && myParamID != null){	
+	if(myParamID != "" && myParamID != null && myParamID != "NOT FOUND"){	
 		try{
 			const proxyurl = "https://cors-anywhere.herokuapp.com/";
 			var url = 'https://script.google.com/macros/s/AKfycbztcDBVjq09BBx74UVzQ_TYxAI5cMZa7389xqBWTbL58ORmzrDa/exec?id=' + myParamID;
