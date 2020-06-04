@@ -565,7 +565,7 @@ function loadcheckURLOptions(){
 	var myParamRating = "";
 	var myParamcol1 = "";	
 	var myParamcol2 = "";
-	if(myParamID != "" && myParamID != null && myParamID != "NOT FOUND"){	
+	if(myParamID != "" && myParamID != null){	
 		try{
 			const proxyurl = "https://cors-anywhere.herokuapp.com/";
 			var url = 'https://script.google.com/macros/s/AKfycbztcDBVjq09BBx74UVzQ_TYxAI5cMZa7389xqBWTbL58ORmzrDa/exec?id=' + myParamID;
@@ -578,45 +578,45 @@ function loadcheckURLOptions(){
 					myParamcol1 = data.colourone;	
 					myParamcol2 = data.colourtwo;
 			
-					
-					//var myParam = urlParams.get('GroupList');
-					var slcOptionsSwitch = document.getElementById('slcOptionsSwitch');
-					var newelem = document.createElement('option');
-					newelem.id = "optNewOption";
-					if(myParam != "" && myParam != null){		
-						var decoded = window.atob(myParam);
-						var Options = JSON.parse(decoded);
+					if(myParamName != "NOT FOUND"){
+						//var myParam = urlParams.get('GroupList');
+						var slcOptionsSwitch = document.getElementById('slcOptionsSwitch');
+						var newelem = document.createElement('option');
+						newelem.id = "optNewOption";
+						if(myParam != "" && myParam != null){		
+							var decoded = window.atob(myParam);
+							var Options = JSON.parse(decoded);
+							
+							document.getElementById('jsonhidden').innerHTML = JSON.stringify(Options);//lzw_decode(myParam);//
+							newelem.value = myParam;
+						}
+						//var myParamRating = urlParams.get('RatingList');
+						if(myParamRating != "" && myParamRating != null){
+							var decodedRating = window.atob(myParamRating);
+							var Ratings = JSON.parse(decodedRating);
+							document.getElementById('ratingshidden').innerHTML = JSON.stringify(Ratings);//lzw_decode(myParamRating); //
+						}
+						//var myParamcol1 = urlParams.get('Col1');
+						if(myParamcol1 != "" && myParamcol1 != null){
+							var Colour1 = "#" + myParamcol1;
+							document.documentElement.style.setProperty('--site-colour', Colour1);
+							document.getElementById('inpSiteColour').value = Colour1;
+						}
+						//var myParamcol2 = urlParams.get('Col2');
+						if(myParamcol2 != "" && myParamcol2 != null){
+							var Colour2 = "#" + myParamcol2;
+							document.documentElement.style.setProperty('--site-colour-second', Colour2);
+							document.getElementById('inpSiteColourSecond').value = Colour2;
+						}
+						//var myParamName = urlParams.get('Name');
+						if(myParamName != "" && myParamName != null && myParam != "" && myParam != null){
+							newelem.innerHTML = myParamName;
+							slcOptionsSwitch.appendChild(newelem);
+							document.getElementById('optNewOption').selected = true;
+						}
 						
-						document.getElementById('jsonhidden').innerHTML = JSON.stringify(Options);//lzw_decode(myParam);//
-						newelem.value = myParam;
+						RateItems();
 					}
-					//var myParamRating = urlParams.get('RatingList');
-					if(myParamRating != "" && myParamRating != null){
-						var decodedRating = window.atob(myParamRating);
-						var Ratings = JSON.parse(decodedRating);
-						document.getElementById('ratingshidden').innerHTML = JSON.stringify(Ratings);//lzw_decode(myParamRating); //
-					}
-					//var myParamcol1 = urlParams.get('Col1');
-					if(myParamcol1 != "" && myParamcol1 != null){
-						var Colour1 = "#" + myParamcol1;
-						document.documentElement.style.setProperty('--site-colour', Colour1);
-						document.getElementById('inpSiteColour').value = Colour1;
-					}
-					//var myParamcol2 = urlParams.get('Col2');
-					if(myParamcol2 != "" && myParamcol2 != null){
-						var Colour2 = "#" + myParamcol2;
-						document.documentElement.style.setProperty('--site-colour-second', Colour2);
-						document.getElementById('inpSiteColourSecond').value = Colour2;
-					}
-					//var myParamName = urlParams.get('Name');
-					if(myParamName != "" && myParamName != null && myParam != "" && myParam != null){
-						newelem.innerHTML = myParamName;
-						slcOptionsSwitch.appendChild(newelem);
-						document.getElementById('optNewOption').selected = true;
-					}
-					
-					RateItems();
-			
 				})
 				.catch(function (error) {
 					copy("Request Failed");
