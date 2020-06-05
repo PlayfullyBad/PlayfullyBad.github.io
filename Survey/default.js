@@ -218,7 +218,7 @@ function RateItems(){
 			var newelemtbody = document.createElement('tbody');
 			var tooltiptext = "";
 			if(jsonobject[i].Description != null && jsonobject[i].Description != ""){
-				tooltiptext = " <span class='tooltip'>" + tooltipicon.replace("{{colour}}","var(--site-colour)") + "<span>" + jsonobject[i].Description + "</span></span>";
+				tooltiptext = " <span class='tooltip'>" + tooltipicon.replace("{{colour}}","var(--site-colour)") + "<p>" + jsonobject[i].Description + "</p></span>";
 			}
 			var innerhtmlthead = "<thead><tr><th>" + jsonobject[i].Name + tooltiptext + "</th>";
 			for (var b = 0; b < jsonobject[i].ChoiceType.length; b++) {
