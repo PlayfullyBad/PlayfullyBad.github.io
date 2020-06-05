@@ -185,7 +185,7 @@ input[type="color"] {
   display: inline-block;
 }
 
-.tooltip span {
+.tooltip p {
   visibility: hidden;
   width: 160px;
   background-color: var(--site-colour-second);
@@ -201,7 +201,7 @@ input[type="color"] {
   z-index: 9999999999999999;
 }
 
-.tooltip:hover span {
+.tooltip:hover p {
   visibility: visible;
 }
 
