@@ -235,7 +235,7 @@ function RateItems(){
 			for (var j = 0; j < jsonobject[i].Items.length; j++) {
 				var tooltiptextItem = "";
 				if(jsonobject[i].Items[j].Description != null && jsonobject[i].Items[j].Description != ""){
-					tooltiptextItem = " <span class='tooltip'>" + tooltipicon.replace("{{colour}}","var(--site-colour-second)") + "<span>" + jsonobject[i].Items[j].Description + "</span></span>";
+					tooltiptextItem = " <span class='tooltip'>" + tooltipicon.replace("{{colour}}","var(--site-colour-second)") + "<p>" + jsonobject[i].Items[j].Description + "</p></span>";
 				}
 				innerhtmltbody = innerhtmltbody + "<tr><td>" + jsonobject[i].Items[j].Name + tooltiptextItem + "</td>";
 				for (var k = 0; k < jsonobject[i].ChoiceType.length; k++) {
