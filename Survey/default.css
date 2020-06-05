@@ -5,8 +5,8 @@
 	--rating3: yellow;
 	--rating4: green;
 	--rating5: blue;
-	--site-colour: purple;
-	--site-colour-second: white;
+	--site-colour: #ffffff;
+	--site-colour-second: #303030;
 }
 
 body {	
