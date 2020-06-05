@@ -285,6 +285,10 @@ function saveresults(){
 }
 
 function createImage(){
+	if (!(confirm("Are you sure you want to submit results to imgur?"))) {
+		return;
+	}
+	
 	var DisplayArea = document.getElementById("divDisplay");
 	var checkedBoxes = DisplayArea.querySelectorAll('input[type=radio]:checked');
 	var jsonobject = JSON.parse(document.getElementById('jsonhidden').innerHTML);
