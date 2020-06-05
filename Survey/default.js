@@ -462,6 +462,7 @@ function shareOptions(){
 		alert("Share Cancelled");
 		return;
 	}
+	Name = replaceAll(Name.trim()," ","");
 	var idName = ISODateString() + Name;
 	const proxyurl = "https://cors-anywhere.herokuapp.com/";
 	fetch(proxyurl + 'https://script.google.com/macros/s/AKfycbztcDBVjq09BBx74UVzQ_TYxAI5cMZa7389xqBWTbL58ORmzrDa/exec', {
