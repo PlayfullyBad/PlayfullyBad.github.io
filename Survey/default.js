@@ -630,6 +630,7 @@ function loadcheckURLOptions(){
 		
 	} else {
 		document.getElementById("slcOptionsSwitch").selectedIndex = 1;
+		SwitchOptions();
 		saveRatingsNames();
 	}
 }
