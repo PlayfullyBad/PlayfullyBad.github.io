@@ -629,6 +629,7 @@ function loadcheckURLOptions(){
 		} finally{ saveRatingsNames(); }
 		
 	} else {
+		document.getElementById("slcOptionsSwitch").selectedIndex = 1;
 		saveRatingsNames();
 	}
 }
