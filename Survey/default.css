@@ -41,7 +41,7 @@ button {
 	background-color: var(--site-colour-second);
 }
 
-thead, .stickytop {
+.stickytop {
 	position: sticky;
 	top: 0;
 	background-color: var(--site-colour-second);
