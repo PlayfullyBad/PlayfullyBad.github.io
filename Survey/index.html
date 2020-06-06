@@ -15,7 +15,6 @@
 			<button id="btnEditItems" onclick="htmlfromjson()">Edit Fields</button>
 			<button id="CustomShare" onclick="shareOptions()">Share List</button>
 			<button id="EditRating" onclick="editRating()">Edit Rating</button>
-			<button id="SaveRating" onclick="saveRatingsNames()">Save Rating</button>
 			<button id="ZeroEverything" onclick="zeroAll()">Zero Everything</button>
 			<select id="slcOptionsSwitch" onchange="SwitchOptions()">
 				<option disabled selected></option>
@@ -43,13 +42,19 @@
 			<div class="stickybottom">
 				<button onclick="htmltojson()">Save</button>
 				<button onclick="newgroup()">Add Group</button>
+				<button onclick="htmltojson('Cancel')">Cancel</button>
 			</div>
 		</div>
 		<div id="divDisplay" style="clear:both;">
 		</div>
 		<div id="divImage">
 		</div>
-		<div id="divRatingEdit">
+		<div id="divRatingEditContainer">
+			<div id="divRatingEdit"></div>
+			<div class="stickybottom">
+				<button id="SaveRating" onclick="saveRatingsNames()">Save Rating</button>
+				<button onclick="saveRatingsNames('Cancel')">Cancel</button>			
+			</div>
 		</div>
 		<div id="divImport" style="display:none;">
 			<textarea id="import" style="width:100%; height:50vh;"></textarea>
