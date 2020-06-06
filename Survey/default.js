@@ -733,7 +733,7 @@ function importitems(){
 	document.getElementById('ratingIndex').style = "";
 	document.getElementById('divDisplay').style = "";
 	document.getElementById('btnEditItems').style = "";
-	document.getElementById('imgurUpload').style.display = "none";
+	document.getElementById('imgurUpload').style = "";
 	document.getElementById('CustomShare').style = "";
 	document.getElementById('EditRating').style = "";
 	document.getElementById('ZeroEverything').style = "";
