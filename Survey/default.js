@@ -786,3 +786,8 @@ function importitems(){
 	RateItems();
 	
 }
+
+function ChangeDisplayType(id, displaytype) {
+	var modal = document.getElementById(id);
+	modal.style.display = displaytype;
+}
