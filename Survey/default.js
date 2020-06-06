@@ -14,66 +14,67 @@ function initAll() {
 	document.getElementById('editjson').style.display = "none";
 }
 
-function htmltojson(){
-	var jsonobject = [];
-	var Groups = document.getElementById('jsonbuilder').getElementsByClassName('Group');
-	for (var i = 0; i < Groups.length; i++) {
-		var GroupsDiscriptionList = Groups[i].getElementsByTagName('dl');
-		var GroupName = GroupsDiscriptionList[0].getElementsByTagName('dt')[0].getElementsByTagName('input')[0].value;
-		var GroupDescription = GroupsDiscriptionList[0].getElementsByTagName('dd')[0].getElementsByTagName('input')[0].value;
-		if(GroupName != ""){
-			var newobj = {}, newgroup = [];
-			newobj.Name = GroupName;
-			newobj.Description = GroupDescription;
-			newobj.Items = [];		 
-			newobj.ChoiceType = [];		 
-			var GroupChoiceList = GroupsDiscriptionList[0].getElementsByTagName('ul')[0];
-			var Choices = GroupChoiceList.getElementsByTagName('input');
-			if(Choices.length > 0){
-				for (var k = 0; k < Choices.length; k++) {
-					var newchoice = {};		
-					if(Choices[k].value != ""){
-						newchoice.Name = Choices[k].value;
-						newobj.ChoiceType.push(newchoice);
+function htmltojson(instruction){
+	instruction = instruction || "";
+	if(instruction != "Cancel"){
+		var jsonobject = [];
+		var Groups = document.getElementById('jsonbuilder').getElementsByClassName('Group');
+		for (var i = 0; i < Groups.length; i++) {
+			var GroupsDiscriptionList = Groups[i].getElementsByTagName('dl');
+			var GroupName = GroupsDiscriptionList[0].getElementsByTagName('dt')[0].getElementsByTagName('input')[0].value;
+			var GroupDescription = GroupsDiscriptionList[0].getElementsByTagName('dd')[0].getElementsByTagName('input')[0].value;
+			if(GroupName != ""){
+				var newobj = {}, newgroup = [];
+				newobj.Name = GroupName;
+				newobj.Description = GroupDescription;
+				newobj.Items = [];		 
+				newobj.ChoiceType = [];		 
+				var GroupChoiceList = GroupsDiscriptionList[0].getElementsByTagName('ul')[0];
+				var Choices = GroupChoiceList.getElementsByTagName('input');
+				if(Choices.length > 0){
+					for (var k = 0; k < Choices.length; k++) {
+						var newchoice = {};		
+						if(Choices[k].value != ""){
+							newchoice.Name = Choices[k].value;
+							newobj.ChoiceType.push(newchoice);
+						}
+						if((k + 1) == Choices.length && newobj.ChoiceType.length == 0){
+							newchoice.Name = "General";
+							newobj.ChoiceType.push(newchoice);						
+						}
 					}
-					if((k + 1) == Choices.length && newobj.ChoiceType.length == 0){
-						newchoice.Name = "General";
-						newobj.ChoiceType.push(newchoice);						
+				} else {				
+					var newchoiceGeneral = {};		
+					newchoiceGeneral.Name = "General";
+					newobj.ChoiceType.push(newchoiceGeneral);				
+				}
+				var GroupItemList = GroupsDiscriptionList[0].getElementsByTagName('dl');
+				var items = GroupItemList[0].getElementsByTagName('dt');
+				var itemsdescription = GroupItemList[0].getElementsByTagName('dd');	
+				for (var j = 0; j < items.length; j++) {
+					var newitem = {};		
+					if(items[j].getElementsByTagName('input')[0].value != ""){
+						newitem.Name = items[j].getElementsByTagName('input')[0].value;
+						newitem.Description = itemsdescription[j].getElementsByTagName('input')[0].value;
+						newitem.Rating = items[j].getElementsByTagName('input')[0].getAttribute('data-rating');
+						newobj.Items.push(newitem);
+					} else {
+						// var x = confirm("Empty item name do you wish to continue? (Note this item will be ingored and removed)");
+						// if (x != true) {
+							// return;
+						// }					
 					}
 				}
-			} else {				
-				var newchoiceGeneral = {};		
-				newchoiceGeneral.Name = "General";
-				newobj.ChoiceType.push(newchoiceGeneral);				
+				jsonobject.push(newobj);
+			} else {
+				// var r = confirm("Empty group name do you wish to continue? (Note this entire group will be ingored and removed including all items in the group)");
+				// if (r != true) {
+					// return;
+				// }
 			}
-			var GroupItemList = GroupsDiscriptionList[0].getElementsByTagName('dl');
-			var items = GroupItemList[0].getElementsByTagName('dt');
-			var itemsdescription = GroupItemList[0].getElementsByTagName('dd');	
-			for (var j = 0; j < items.length; j++) {
-				var newitem = {};		
-				if(items[j].getElementsByTagName('input')[0].value != ""){
-					newitem.Name = items[j].getElementsByTagName('input')[0].value;
-					newitem.Description = itemsdescription[j].getElementsByTagName('input')[0].value;
-					newitem.Rating = items[j].getElementsByTagName('input')[0].getAttribute('data-rating');
-					newobj.Items.push(newitem);
-				} else {
-					// var x = confirm("Empty item name do you wish to continue? (Note this item will be ingored and removed)");
-					// if (x != true) {
-						// return;
-					// }					
-				}
-			}
-			jsonobject.push(newobj);
-		} else {
-			// var r = confirm("Empty group name do you wish to continue? (Note this entire group will be ingored and removed including all items in the group)");
-			// if (r != true) {
-				// return;
-			// }
 		}
+		document.getElementById('jsonhidden').innerHTML = JSON.stringify(jsonobject);
 	}
-	document.getElementById('jsonhidden').innerHTML = JSON.stringify(jsonobject);
-	document.getElementById('jsonbuilder').innerHTML = "";	
-	document.getElementById('editjson').style.display = "none";
 	document.getElementById('btnEditItems').style = "";
 	document.getElementById('imgurUpload').style = "";
 	document.getElementById('CustomShare').style = "";
@@ -82,6 +83,8 @@ function htmltojson(){
 	document.getElementById('btnTextImport').style = "";
 	document.getElementById('ratingIndex').style = "";
 	document.getElementById('slcOptionsSwitch').style = "";
+	document.getElementById('editjson').style.display = "none";
+	document.getElementById('jsonbuilder').innerHTML = "";	
 	document.getElementById('Menu').style = "";
 	RateItems();
 }
@@ -212,7 +215,7 @@ function deleteNode(type, id){
 }
 
 function RateItems(){	
-	document.getElementById('SaveRating').style.display = "none";
+	document.getElementById('divRatingEditContainer').style.display = "none";
 	var DisplayArea = document.getElementById("divDisplay");
 	var IndexArea = document.getElementById("ratingIndex");
 	IndexArea.innerHTML = "";
@@ -686,8 +689,8 @@ function editRating(){
 		newelem.innerHTML = innerhtml;
 		divRatingEdit.appendChild(newelem);	
 	}
-	document.getElementById('EditRating').style.display = "none";
-	document.getElementById('SaveRating').style = "";
+	document.getElementById('Menu').style.display = "none";
+	document.getElementById('divRatingEditContainer').style = "";
 	document.getElementById('btnEditItems').style.display = "none";
 	document.getElementById('imgurUpload').style.display = "none";
 	document.getElementById('CustomShare').style.display = "none";
@@ -699,21 +702,25 @@ function editRating(){
 	
 }
 
-function saveRatingsNames(){
+function saveRatingsNames(instruction){
+	
+	instruction = instruction || "";
 	var ratings = JSON.parse(document.getElementById("ratingshidden").innerHTML);
-	for (var k = 0; k < ratings.length; k++) {
-		var ratingContainer = document.getElementById("Rating" + k);
-		if(ratingContainer != null){
-			ratings[k].Colour = ratingContainer.getElementsByTagName('input')[1].value;
-			ratings[k].Description = ratingContainer.getElementsByTagName('input')[0].value;
+	if(instruction != "Cancel"){
+		for (var k = 0; k < ratings.length; k++) {
+			var ratingContainer = document.getElementById("Rating" + k);
+			if(ratingContainer != null){
+				ratings[k].Colour = ratingContainer.getElementsByTagName('input')[1].value;
+				ratings[k].Description = ratingContainer.getElementsByTagName('input')[0].value;
+			}
+			document.documentElement.style.setProperty('--rating' + k, ratings[k].Colour);
 		}
-		document.documentElement.style.setProperty('--rating' + k, ratings[k].Colour);
 	}
 	document.getElementById("ratingshidden").innerHTML = JSON.stringify(ratings);
 	document.getElementById("divRatingEdit").innerHTML = "";
 	
-	document.getElementById('SaveRating').style.display = "none";
-	document.getElementById('EditRating').style = "";
+	document.getElementById('divRatingEditContainer').style.display = "none";
+	document.getElementById('Menu').style = "";
 	document.getElementById('btnEditItems').style = "";
 	document.getElementById('imgurUpload').style = "";
 	document.getElementById('CustomShare').style = "";
