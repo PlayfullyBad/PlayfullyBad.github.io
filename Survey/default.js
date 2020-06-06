@@ -4,9 +4,7 @@ window.onload = loadcheckURLOptions;
 function initAll() {	
 	document.getElementById('jsonbuilder').innerHTML = "";	
 	document.getElementById('divDisplay').innerHTML = "";	
-	document.getElementById('divImage').innerHTML = "";	
 	document.getElementById('divRatingEdit').innerHTML = "";	
-	document.getElementById('import').innerHTML = "";	
 	document.getElementById('ratingIndex').innerHTML = "";	
 	document.getElementById('import').value = "";	
 	document.getElementById('Menu').style = "";
@@ -75,14 +73,7 @@ function htmltojson(instruction){
 		}
 		document.getElementById('jsonhidden').innerHTML = JSON.stringify(jsonobject);
 	}
-	document.getElementById('btnEditItems').style = "";
-	document.getElementById('imgurUpload').style = "";
-	document.getElementById('CustomShare').style = "";
-	document.getElementById('EditRating').style = "";
-	document.getElementById('ZeroEverything').style = "";
-	document.getElementById('btnTextImport').style = "";
 	document.getElementById('ratingIndex').style = "";
-	document.getElementById('slcOptionsSwitch').style = "";
 	document.getElementById('editjson').style.display = "none";
 	document.getElementById('jsonbuilder').innerHTML = "";	
 	document.getElementById('Menu').style = "";
@@ -92,13 +83,6 @@ function htmlfromjson(){
 	document.getElementById("ratingIndex").innerHTML = "";
 	document.getElementById("divDisplay").innerHTML = "";
 	document.getElementById('Menu').style.display = "none";
-	document.getElementById('btnEditItems').style.display = "none";
-	document.getElementById('slcOptionsSwitch').style.display = "none";
-	document.getElementById('imgurUpload').style.display = "none";
-	document.getElementById('CustomShare').style.display = "none";
-	document.getElementById('EditRating').style.display = "none";
-	document.getElementById('ZeroEverything').style.display = "none";
-	document.getElementById('btnTextImport').style.display = "none";
 	document.getElementById('ratingIndex').style.display = "none";
 	document.getElementById('editjson').style = "";
 	if(document.getElementById('jsonhidden').innerHTML != ""){
@@ -340,8 +324,6 @@ function createImage(){
 	
 	var height = ((numberItems + (jsonobject.length * 2)) * heightunit);
 	var totalrows = (numberItems + (jsonobject.length * 2));
-	var divImage = document.getElementById("divImage");
-	divImage.innerHTML = "";
 	var c = document.createElement('canvas');
 	c.style.border = "1px solid black";
 	c.width = columnwidth * columns;
@@ -440,11 +422,11 @@ function createImage(){
 	//divImage.appendChild(canvfinal);
 	//document.write('<img src="'+img+'"/>');
 	imgurUpload(img);
+	
 }
 
 function imgurUpload(imagestring) {
 	var imgurClientId = '9db53e5936cd02f';
-	var resultImgur = document.getElementById("resultImgur");
 	const proxyurl = "https://cors-anywhere.herokuapp.com/";
 	fetch(proxyurl + 'https://api.imgur.com/3/image', {
 		method: 'post',
@@ -462,11 +444,20 @@ function imgurUpload(imagestring) {
 		.then(response=>response.json())
 		.then(function (data) {
 			var url = 'https://i.imgur.com/' + data.data.id + '.png';			
-			Message(url);
+			Message(url, "Link");
+			try{
+				var image = new Image();
+				image.src = imagestring;
+				var newtab = window.open("");
+				newtab.document.write(image.outerHTML);
+				newtab.focus();
+			}
+			catch{}				
 		})
 		.catch(function (error) {
 			Message("Request Failed");
 		});		
+		
 }
 
 function replaceAll(str, oldstr, newstr) {
@@ -522,7 +513,7 @@ function shareOptions(){
 		.then(response=>response.text())
 		.then(function (data) {
 			//var url = 'https://i.imgur.com/' + data.data.id + '.png';
-			Message(getUrl.protocol + "//" + getUrl.host + getUrl.pathname + "?id=" + idName);
+			Message(getUrl.protocol + "//" + getUrl.host + getUrl.pathname + "?id=" + idName, "Link");
 		})
 		.catch(function (error) {
 			Message("Request Failed");
@@ -662,7 +653,7 @@ function loadcheckURLOptions(){
 					}
 				})
 				.catch(function (error) {
-					copy("Request Failed");
+					Message("Request Failed");
 				});	
 		} finally{ saveRatingsNames(); }
 		
@@ -703,14 +694,8 @@ function editRating(){
 	}
 	document.getElementById('Menu').style.display = "none";
 	document.getElementById('divRatingEditContainer').style = "";
-	document.getElementById('btnEditItems').style.display = "none";
-	document.getElementById('imgurUpload').style.display = "none";
-	document.getElementById('CustomShare').style.display = "none";
-	document.getElementById('ZeroEverything').style.display = "none";
 	document.getElementById('divImport').style.display = "none";
-	document.getElementById('btnTextImport').style.display = "none";
 	document.getElementById('ratingIndex').style.display = "none";
-	document.getElementById('slcOptionsSwitch').style.display = "none";
 	
 }
 
@@ -733,12 +718,6 @@ function saveRatingsNames(instruction){
 	
 	document.getElementById('divRatingEditContainer').style.display = "none";
 	document.getElementById('Menu').style = "";
-	document.getElementById('btnEditItems').style = "";
-	document.getElementById('imgurUpload').style = "";
-	document.getElementById('CustomShare').style = "";
-	document.getElementById('ZeroEverything').style = "";
-	document.getElementById('slcOptionsSwitch').style = "";
-	document.getElementById('btnTextImport').style = "";
 	document.getElementById('ratingIndex').style = "";
 	document.getElementById('divImport').style.display = "none";
 	RateItems();
@@ -815,8 +794,21 @@ function importitems(instruction){
 	
 }
 
-function Message(text) {	
-	document.getElementById('pModalMessage').innerHTML = text;
+function Message(text, type) {	
+	type = type || "";
+	var container = document.getElementById('pModalMessage');
+	container.innerHTML = "";
+	switch(type) {
+		case "Link":
+			var newelemlink = document.createElement('a');
+			newelemlink.href = text;
+			newelemlink.target = "_blank";
+			newelemlink.innerHTML = text;
+			container.appendChild(newelemlink);
+			break;
+		default:
+			container.innerHTML = text;
+	}
 	ChangeDisplayType('myModal', 'block');
 }
 
