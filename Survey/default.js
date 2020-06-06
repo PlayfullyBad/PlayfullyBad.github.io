@@ -65,11 +65,13 @@ function htmltojson(){
 	document.getElementById('btnTextImport').style = "";
 	document.getElementById('ratingIndex').style = "";
 	document.getElementById('slcOptionsSwitch').style = "";
+	document.getElementById('menu').style = "";
 	RateItems();
 }
 function htmlfromjson(){
 	document.getElementById("ratingIndex").innerHTML = "";
 	document.getElementById("divDisplay").innerHTML = "";
+	document.getElementById('menu').style.display = "none";
 	document.getElementById('btnEditItems').style.display = "none";
 	document.getElementById('slcOptionsSwitch').style.display = "none";
 	document.getElementById('imgurUpload').style.display = "none";
