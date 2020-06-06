@@ -1,6 +1,19 @@
 const tooltipicon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style="fill: {{colour}};"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.033 16.01c.564-1.789 1.632-3.932 1.821-4.474.273-.787-.211-1.136-1.74.209l-.34-.64c1.744-1.897 5.335-2.326 4.113.613-.763 1.835-1.309 3.074-1.621 4.03-.455 1.393.694.828 1.819-.211.153.25.203.331.356.619-2.498 2.378-5.271 2.588-4.408-.146zm4.742-8.169c-.532.453-1.32.443-1.761-.022-.441-.465-.367-1.208.164-1.661.532-.453 1.32-.442 1.761.022.439.466.367 1.209-.164 1.661z"></path></svg>';
 window.onload = loadcheckURLOptions;
 
+function initAll() {	
+	document.getElementById('jsonbuilder').innerHTML = "";	
+	document.getElementById('divDisplay').innerHTML = "";	
+	document.getElementById('divImage').innerHTML = "";	
+	document.getElementById('divRatingEdit').innerHTML = "";	
+	document.getElementById('import').innerHTML = "";	
+	document.getElementById('ratingIndex').innerHTML = "";	
+	document.getElementById('import').value = "";	
+	document.getElementById('Menu').style = "";
+	document.getElementById('myModal').style.display = "none";
+	document.getElementById('editjson').style.display = "none";
+}
+
 function htmltojson(){
 	var jsonobject = [];
 	var Groups = document.getElementById('jsonbuilder').getElementsByClassName('Group');
@@ -22,6 +35,10 @@ function htmltojson(){
 					if(Choices[k].value != ""){
 						newchoice.Name = Choices[k].value;
 						newobj.ChoiceType.push(newchoice);
+					}
+					if((k + 1) == Choices.length && newobj.ChoiceType.length == 0){
+						newchoice.Name = "General";
+						newobj.ChoiceType.push(newchoice);						
 					}
 				}
 			} else {				
@@ -291,6 +308,8 @@ function createImage(){
 		return;
 	}
 	
+	Message("Loading...");
+	
 	var DisplayArea = document.getElementById("divDisplay");
 	var checkedBoxes = DisplayArea.querySelectorAll('input[type=radio]:checked');
 	var jsonobject = JSON.parse(document.getElementById('jsonhidden').innerHTML);
@@ -427,11 +446,11 @@ function imgurUpload(imagestring) {
 		//.then(json)
 		.then(response=>response.json())
 		.then(function (data) {
-			var url = 'https://i.imgur.com/' + data.data.id + '.png';
-			resultImgur.innerHTML = url;
+			var url = 'https://i.imgur.com/' + data.data.id + '.png';			
+			Message(url);
 		})
 		.catch(function (error) {
-			resultImgur.innerHTML = "Request Failed";
+			Message("Request Failed");
 		});		
 }
 
@@ -452,6 +471,13 @@ function ISODateString(){
 }
 
 function shareOptions(){
+	var Name = prompt("Please enter form name:", "");
+	if (Name == null || Name == "")	{
+		alert("Share Cancelled");
+		return;
+	}
+	Message("Loading...");
+	
 	var getUrl = window.location;	
 	var jsonobject = JSON.parse(document.getElementById('jsonhidden').innerHTML);
 	var jsonString = JSON.stringify(jsonobject);
@@ -459,11 +485,6 @@ function shareOptions(){
 	var ratingobject = JSON.parse(document.getElementById('ratingshidden').innerHTML);
 	var ratingString = JSON.stringify(ratingobject);
 	var base64Rating = window.btoa(ratingString);
-	var Name = prompt("Please enter form name:", "");
-	if (Name == null || Name == "")	{
-		alert("Share Cancelled");
-		return;
-	}
 	Name = replaceAll(Name.trim()," ","");
 	var idName = ISODateString() + Name;
 	const proxyurl = "https://cors-anywhere.herokuapp.com/";
@@ -486,10 +507,10 @@ function shareOptions(){
 		.then(response=>response.text())
 		.then(function (data) {
 			//var url = 'https://i.imgur.com/' + data.data.id + '.png';
-			copy(getUrl.protocol + "//" + getUrl.host + getUrl.pathname + "?id=" + idName);
+			Message(getUrl.protocol + "//" + getUrl.host + getUrl.pathname + "?id=" + idName);
 		})
 		.catch(function (error) {
-			copy("Request Failed");
+			Message("Request Failed");
 		});	
 	
 	//var jsongzip = lzw_encode(jsonString);
@@ -564,7 +585,7 @@ function SwitchOptions(){
 }
 
 function loadcheckURLOptions(){
-	
+	Message("Loading...");
 	var urlParams = new URLSearchParams(window.location.search);
 	var myParamID = urlParams.get('id');
 	var myParam = "";
@@ -635,6 +656,8 @@ function loadcheckURLOptions(){
 		SwitchOptions();
 		saveRatingsNames();
 	}
+	
+	ChangeDisplayType('myModal', 'none');
 }
 
 function copy(text) {
@@ -718,31 +741,17 @@ function zeroAll(){
 	saveresults();
 }
 function showImport(){	
-	document.getElementById('divDisplay').style.display = "none";
+	initAll();
+	document.getElementById('Menu').style.display = "none";
 	document.getElementById('divImport').style = "";
-	document.getElementById('btnEditItems').style.display = "none";
-	document.getElementById('imgurUpload').style.display = "none";
-	document.getElementById('CustomShare').style.display = "none";
-	document.getElementById('EditRating').style.display = "none";
-	document.getElementById('ZeroEverything').style.display = "none";
-	document.getElementById('btnTextImport').style.display = "none";
-	document.getElementById('ratingIndex').style.display = "none";
-	document.getElementById('slcOptionsSwitch').style.display = "none";
 }
 
-function importitems(){
+function importitems(instruction){
+	instruction = instruction || "";
 	document.getElementById('divImport').style.display = "none";
-	document.getElementById('ratingIndex').style = "";
-	document.getElementById('divDisplay').style = "";
-	document.getElementById('btnEditItems').style = "";
-	document.getElementById('imgurUpload').style = "";
-	document.getElementById('CustomShare').style = "";
-	document.getElementById('EditRating').style = "";
-	document.getElementById('ZeroEverything').style = "";
-	document.getElementById('btnTextImport').style = "";
-	document.getElementById('slcOptionsSwitch').style = "";
+	document.getElementById('Menu').style = "";
 	var importtext = document.getElementById("import");
-	if(importtext.value != "" && importtext.value != null){
+	if(importtext.value != "" && importtext.value != null && instruction != "Cancel"){
 		var jsonobject = [];
 		groups = replaceAll(importtext.value,"\n","").split("#");
 		for (var i = 1; i < groups.length; i++) { 
@@ -785,6 +794,11 @@ function importitems(){
 	//GroupItems2 = GroupItems[1].split("\n?");
 	RateItems();
 	
+}
+
+function Message(text) {	
+	document.getElementById('pModalMessage').innerHTML = text;
+	ChangeDisplayType('myModal', 'block');
 }
 
 function ChangeDisplayType(id, displaytype) {
