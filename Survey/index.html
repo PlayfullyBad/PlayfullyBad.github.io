@@ -67,6 +67,7 @@
 			</div>
 			<div class="stickybottom">
 				<button onclick="importitems()">Import</button>
+				<button onclick="importitems('Cancel')">Cancel</button>
 			</div>
 		</div>
 		<div id="ratingIndex">
@@ -75,7 +76,7 @@
 		<div id="myModal" class="modal">			
 			<div class="modal-content">
 				<span class="close" onclick="ChangeDisplayType('myModal', 'none')">&times;</span>
-				<p>Some text in the Modal..</p>
+				<p id="pModalMessage">Loading...</p>
 			</div>
 		</div>
 	</body>
