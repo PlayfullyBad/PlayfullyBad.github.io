@@ -41,13 +41,16 @@ button {
 	background-color: var(--site-colour-second);
 }
 
-.stickytop {
-	position: sticky;
-	top: 0;
+thead, .stickytop {	
 	background-color: var(--site-colour-second);
 	color: var(--site-colour);
 	padding: 5px;
 	z-index:999999;
+}
+
+.stickytop {
+	position: sticky;
+	top: 0;
 }
 
 #ratingIndex, .stickybottom {
