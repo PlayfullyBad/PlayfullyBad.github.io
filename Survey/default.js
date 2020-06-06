@@ -310,6 +310,11 @@ function createImage(){
 	if (!(confirm("Are you sure you want to submit results to imgur?"))) {
 		return;
 	}
+	var Name = prompt("Please enter name:", "");
+	if (Name == null || Name == "")	{
+		alert("Share Cancelled");
+		return;
+	}
 	
 	Message("Loading...");
 	
@@ -319,7 +324,7 @@ function createImage(){
 	var ratings = JSON.parse(document.getElementById("ratingshidden").innerHTML);
 	var heightunit = 18;
 	var circlerad = (heightunit-2)/2;
-	var columns = 6;
+	var columns = 5;
 	var currentcolumn = 1;
 	var columnwidth = heightunit * 24;
 	var currentrow = 0;
@@ -349,6 +354,13 @@ function createImage(){
 	ctx.fillStyle = document.getElementById('inpSiteColourSecond').value;
 	ctx.font = (heightunit-2) + "px Arial";
 	ctx.textAlign = "left";
+	
+	
+	ctx.textAlign = "right";
+	ctx.font = "bold "+((heightunit-2)*3) + "px Arial";
+	ctx.fillText(Name,(columnwidth * columns) - 10,yheight * 3);
+	ctx.textAlign = "left";
+	
 	
 	var RatingString = "";
 	//ctx.textAlign = "center";
