@@ -9,11 +9,11 @@
 		<link rel="stylesheet" href="default.css">
 	</head>
 	<body>
-		<div style="clear:both;">
+		<div class="stickytop" style="clear:both;">
 			<button id="imgurUpload" onclick="createImage()">Upload Image</button>
 			<button id="btnTextImport" onclick="showImport()">Text Import</button>
 			<button id="btnEditItems" onclick="htmlfromjson()">Edit Fields</button>
-			<button id="CustomShare" onclick="shareOptions()">Share Options</button>
+			<button id="CustomShare" onclick="shareOptions()">Share List</button>
 			<button id="EditRating" onclick="editRating()">Edit Rating</button>
 			<button id="SaveRating" onclick="saveRatingsNames()">Save Rating</button>
 			<button id="ZeroEverything" onclick="zeroAll()">Zero Everything</button>
@@ -51,8 +51,6 @@
 		</div>
 		<div id="divRatingEdit">
 		</div>
-		<div id="ratingIndex">
-		</div>
 		<div id="divImport" style="display:none;">
 			<textarea id="import" style="width:100%; height:50vh;"></textarea>
 			<button onclick="importitems()">Import</button>
@@ -68,6 +66,8 @@
 				*Item2<br>
 				?Item2 Description<br>
 			</div>
+		</div>
+		<div id="ratingIndex">
 		</div>
 	</body>
 </html>
