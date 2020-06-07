@@ -448,9 +448,9 @@ function imgurUpload(imagestring) {
 			try{
 				var image = new Image();
 				image.src = imagestring;
-				var newtab = window.open("");
-				newtab.document.write(image.outerHTML);
-				newtab.focus();
+				//var newtab = window.open("");
+				//newtab.document.write(image.outerHTML);
+				//newtab.focus();
 			}
 			catch{}				
 		})
