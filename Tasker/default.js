@@ -123,7 +123,7 @@ function Post(x, id){
 				//.then(json)
 				.then(response=>response.text())
 				.then(function (data) {
-					console.log(data);
+					alert(data);
 					switch(x){
 						case "submitanswer":
 							deleteNode("task-" + id);
@@ -271,7 +271,7 @@ function createusertasks(x){
 		innerhtml = "<span>" + x[j].description + "</span> Required in:" + daysremaining + "days " + hoursremaining + "hours " + minutesremaining + "minutes ";
 		var sumbitbutton = "block";
 		if(x[j].evidence == 1){
-			innerhtml += "File Upload: <input id='taskevidence-" + x[j].id + "' type='file' onchange='encodeImageFileAsURL(" + x[j].id + ")' /><input id='base64image-" + x[j].id + "' style='display:none;' /><button onclick='imgurUpload(" + x[j].id  + ")'>Upload Image</button><input id='imageURL-" + x[j].id + "' style='display:none;' />"
+			innerhtml += "File Upload: <input id='taskevidence-" + x[j].id + "' type='file' onchange='encodeImageFileAsURL(" + x[j].id + ")' /><input id='base64image-" + x[j].id + "' style='display:none;' /><button id='btnUploadImgur-" + x[j].id + "' onclick='imgurUpload(" + x[j].id  + ")'>Upload Image</button><input id='imageURL-" + x[j].id + "' style='display:none;' disabled='disabled' />"
 			sumbitbutton = "none";
 		}
 		innerhtml += "Answer: <input id='taskanswer-" + x[j].id + "' />"
@@ -320,7 +320,10 @@ function imgurUpload(id) {
 				var url = 'https://i.imgur.com/' + data.data.id + '.png';	
 				console.log(url);
 				document.getElementById("imageURL-" + id).value = url;
+				document.getElementById("taskevidence-" + id).style.display = "none";
+				document.getElementById("btnUploadImgur-" + id).style.display = "none";
 				document.getElementById("sumbittask-" + id).style.display = "block";
+				document.getElementById("imageURL-" + id).style.display = "block";
 			})
 			.catch(function (error) {
 				alert("Request Failed");
