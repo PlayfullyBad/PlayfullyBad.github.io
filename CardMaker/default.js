@@ -66,6 +66,11 @@ function createImage(){
 	c.width = width;
 	c.height = height;
 	
+	var paddingtext = padding;
+	photoleft = document.getElementById('photoleft').checked;
+	if(photoleft){
+		paddingtext = (c.width / 2) + padding;
+	}
 	var headersize = c.height / 5;
 	var headertext = headersize - (padding * 2);
 	var ctx = c.getContext("2d");
@@ -81,12 +86,12 @@ function createImage(){
 	if (isDark(165, document.getElementById("colour1").value)) {col = "#fff"};
 	ctx.fillStyle = col;
 	ctx.fillText(document.getElementById("name").value, c.width /2 ,headersize - (padding * (5 / 2)));
-	ctx.fillStyle = "#000000";
+	ctx.fillStyle = document.getElementById("colourtext").value;
 	ctx.font = (heightunit-2) + "px Arial";
 	ctx.textAlign = "left";
 	var dob = document.getElementById("dob").value;
 	if(dob != ""){
-		ctx.fillText("D.O.B. " + formatDate(dob), padding ,headersize + yheight);
+		ctx.fillText("D.O.B. " + formatDate(dob), paddingtext ,headersize + yheight);
 		yheight +=heightunit;		
 	}
 	var country = document.getElementById("country").value;
@@ -103,39 +108,50 @@ function createImage(){
 		if(town != ""){
 			location += ", " + town;
 		}
-		yheight = wrapText(ctx, "Location: " + location, padding ,headersize + yheight, (c.width / 2) - (padding * 2), heightunit) - headersize;
+		yheight = wrapText(ctx, "Location: " + location, paddingtext ,headersize + yheight, (c.width / 2) - (padding * 2), heightunit) - headersize;
 		yheight +=heightunit;
 	}
 	for (var i = 1; i < 7; i++) {
 		var attribute = document.getElementById("attribute" + i).value;
 		if(attribute != ""){
-			yheight = wrapText(ctx, "- " + attribute, padding ,headersize + yheight, (c.width / 2) - (padding * 2), heightunit) - headersize;
+			var metrics = ctx.measureText("- ");
+			var testWidth = metrics.width;
+			ctx.fillText("- ", paddingtext ,headersize + yheight);
+			yheight = wrapText(ctx, attribute, paddingtext + testWidth ,headersize + yheight, (c.width / 2) - (padding * 2) - testWidth, heightunit) - headersize;
 			yheight +=heightunit;
 		}
 	}
 	var phone = document.getElementById("phone").value;
 	if(phone != ""){
-		yheight = wrapText(ctx, "Phone: " + phone, padding ,headersize + yheight, (c.width / 2) - (padding * 2), heightunit) - headersize;
+		yheight = wrapText(ctx, "Phone: " + phone, paddingtext ,headersize + yheight, (c.width / 2) - (padding * 2), heightunit) - headersize;
 		yheight +=heightunit;		
 	}
 	var email = document.getElementById("email").value;
 	if(email != ""){
-		yheight = wrapText(ctx, "Email: " + email, padding ,headersize + yheight, (c.width / 2) - (padding * 2), heightunit) - headersize;
+		yheight = wrapText(ctx, "Email: " + email, paddingtext ,headersize + yheight, (c.width / 2) - (padding * 2), heightunit) - headersize;
 		yheight +=heightunit;		
 	}
 	var reddit = document.getElementById("reddit").value;
 	if(reddit != ""){
-		yheight = wrapText(ctx, "Reddit: " + reddit, padding ,headersize + yheight, (c.width / 2) - (padding * 2), heightunit) - headersize;
+		yheight = wrapText(ctx, "Reddit: " + reddit, paddingtext ,headersize + yheight, (c.width / 2) - (padding * 2), heightunit) - headersize;
 		yheight +=heightunit;		
 	}
 	var facebook = document.getElementById("facebook").value;
 	if(facebook != ""){
-		yheight = wrapText(ctx, "Facebook: " + facebook, padding ,headersize + yheight, (c.width / 2) - (padding * 2), heightunit) - headersize;
+		yheight = wrapText(ctx, "Facebook: " + facebook, paddingtext ,headersize + yheight, (c.width / 2) - (padding * 2), heightunit) - headersize;
 		yheight +=heightunit;		
 	}
 	var kik = document.getElementById("kik").value;
 	if(kik != ""){
-		yheight = wrapText(ctx, "KIK: " + kik, padding ,headersize + yheight, (c.width / 2) - (padding * 2), heightunit) - headersize;
+		yheight = wrapText(ctx, "KIK: " + kik, paddingtext ,headersize + yheight, (c.width / 2) - (padding * 2), heightunit) - headersize;
+		yheight +=heightunit;		
+	}
+	var custom = document.getElementById("customtext").value;
+	if(custom != ""){
+		var customx = document.getElementById("customx").value;
+		var customy = document.getElementById("customy").value;
+		var customwrap = document.getElementById("customwrap").value;
+		yheight = wrapText(ctx, custom, c.width * (customx / 100), c.height * (customy / 100), c.width * (customwrap / 100), heightunit) - headersize;
 		yheight +=heightunit;		
 	}
 	
@@ -145,10 +161,9 @@ function createImage(){
 	var img = "";
 	if(photo != ""){		
 		photoimage.onload = function() {
-			fitPhoto(ctx, photoimage, padding, headersize, c);
+			fitPhoto(ctx, photoimage, padding, headersize, c, photoleft);
 			img = c.toDataURL("image/png");
 			base64id.value = img;
-			//ctx.drawImage(photoimage, (c.width / 2) + padding ,headersize + padding);
 		};
 		photoimage.src = photo;
 	} else{
@@ -158,15 +173,19 @@ function createImage(){
 	container.appendChild(c);	
 }
 
-function fitPhoto(context, photo, padding, headersize, canvas){
-	var maxWidth = canvas.width - (padding * 2);
+function fitPhoto(context, photo, padding, headersize, canvas, photoleft){
+	var maxWidth = (canvas.width / 2) - (padding * 2);
 	var maxHeight = canvas.height - (padding * 2) - headersize;
 	var srcWidth = photo.width;
 	var srcHeight = photo.height;
     var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
 	photo.width = photo.width * ratio;
 	photo.height = photo.height * ratio;
-	context.drawImage(photo, (canvas.width / 2) + padding ,headersize + padding, photo.width, photo.height);
+	var photox = (canvas.width / 2) + padding;
+	if(photoleft){
+		photox = padding;
+	}
+	context.drawImage(photo, photox, headersize + padding, photo.width, photo.height);
 }
 
 function wrapText(context, text, x, y, maxWidth, lineHeight) {  
