@@ -1,4 +1,30 @@
+window.onload = init;
+
+function init(){
+	showTab(0, 'tab');
+}
+
+function showTab(id, tabsName){
+	var tabs = document.getElementsByClassName(tabsName);
+	for (i = 0; i < tabs.length; i++) {
+		tabs[i].style.display = "none";
+		if(i == id){
+			tabs[i].style.display = "block";
+		}
+	}
+	links = document.getElementsByClassName(tabsName + "s")[0].getElementsByTagName('button');
+	for (j = 0; j < links.length; j++) {
+		links[j].style.backgroundColor = "#ddd";
+		links[j].style.color = "#000";
+		if(j == id){
+			links[j].style.backgroundColor = "#4CAF50";
+			links[j].style.color = "#fff";
+		}
+	}
+}
+
 function Post(x, id){ 
+	Message("Loading...");
 	id = id || ""
 	var post = {};
 	var accept = "text/plain";
@@ -14,7 +40,7 @@ function Post(x, id){
 					FormPassword: pass
 					})
 			} else{
-				alert("passwords don't match.")
+				Message("passwords don't match.")
 				return;
 			}			
 			break;
@@ -44,7 +70,7 @@ function Post(x, id){
 					UserPassword: pass
 				})
 			} else{
-				alert("passwords don't match.")
+				Message("passwords don't match.")
 				return;
 			}			
 			break;
@@ -123,15 +149,40 @@ function Post(x, id){
 				//.then(json)
 				.then(response=>response.text())
 				.then(function (data) {
-					alert(data);
 					switch(x){
 						case "submitanswer":
 							deleteNode("task-" + id);
 							break;
+						case "newtask":
+							var array = [];
+							var y = {};
+							var proof = document.getElementById('newtaskProof');
+							var description = document.getElementById('newTaskDescription');
+							var timelimit = document.getElementById('newTaskTimeLimit');
+							
+							var proofrequired = 0;
+							if(proof.checked)
+							{
+								proofrequired = 1;
+								proof.removeAttribute('checked');
+							}
+							y.description = description.value;
+							description.value = "";
+							y.enabled = 1;
+							y.id = "new";
+							y.evidence = proofrequired;
+							y.requiredby = timelimit.value;
+							timelimit.value = "";
+							console.log(y);
+							array.push(y);
+							console.log(array);
+							formadmin(array);
+							break;
 					}
+					Message(data);
 				})
 				.catch(function (error) {
-					alert("Failed");
+					Message("Failed");
 			});	
 		} else if(accept == "application/json"){
 			fetch(fullurl, {
@@ -149,7 +200,7 @@ function Post(x, id){
 				.then(function (data) {
 					console.log(data);
 					if(data.length == 1 && data[0].error != undefined && data[0].error != ""){
-						alert(data[0].error);						
+						Message(data[0].error);						
 					} else{
 						document.getElementById('login').style.display = "none";
 						document.getElementById('warning').style.display = "none";
@@ -163,11 +214,12 @@ function Post(x, id){
 							case "admincheck":
 								trackuser(data);
 								break;
-						}
+						}						
+						ChangeDisplayType('myModal', 'none');
 					}
 				})
 				.catch(function (error) {
-					alert("Failed");
+					Message("Failed");
 			});
 		}
 }
@@ -197,10 +249,10 @@ function formadmin(x){
 		
 		var newelem = document.createElement('div');
 		newelem.className = "task";
-		newelem.id = "taskTracking-" + x[j].id;
-		innerhtml = "<span>" + x[j].description + "</span> Required within " + x[j].requiredby + " days";
+		newelem.id = "taskList-" + x[j].id;
+		innerhtml = "<h4>Task " + x[j].id + "</h4><span>" + x[j].description + "</span><hr />Required within " + x[j].requiredby + " days";
 		if(x[j].evidence == "1"){
-			innerhtml += " Proof Required."
+			innerhtml += " with imgur photo proof required."
 		}
 		
 		newelem.innerHTML = innerhtml;
@@ -231,16 +283,16 @@ function trackuser(x){
 		var newelem = document.createElement('div');
 		newelem.className = "task";
 		newelem.id = "taskTracking-" + x[j].id;
-		innerhtml = "<span>" + x[j].description + "</span>";
+		innerhtml = "<span><q>" + x[j].description + "</q></span>";
 		if(x[j].finished == ""){
-			innerhtml += " Required in:" + daysremaining + "days " + hoursremaining + "hours " + minutesremaining + "minutes "
+			innerhtml += " Required in: " + daysremaining + " days " + hoursremaining + " hours " + minutesremaining + " minutes "
 		} else { 
 			innerhtml += " Completed On: " + x[j].finished + " Deadline Was: " + x[j].deadline + " <span>Answer: " + x[j].answer + "</span>";
 		}
 		if(x[j].proof != ""){
-			innerhtml += " <span>Proof: " + x[j].proof + "</span>";
+			innerhtml += " <span>Proof: <a href='" + x[j].proof + "' target='_blank'>" + x[j].proof + "</a></span>";
 		}
-		
+		innerhtml += "<hr />";
 		newelem.innerHTML = innerhtml;
 		taskshowarea.appendChild(newelem);
 	}
@@ -253,36 +305,40 @@ function createusertasks(x){
 	var taskshowarea = document.getElementById('userTasks');
 	taskshowarea.style.display = "block";
 	var now = new Date().getTime();
-	for (var j=0; j<x.length; j++){
-		var requiredby = x[j].requiredby + ".";
-		var yearreq = requiredby.substring(0, 4);
-		var monthreq = requiredby.substring(4, 6);
-		var dayreq = requiredby.substring(6, 8);
-		var daterequired = new Date(yearreq + "-" + monthreq + "-" + dayreq + "T23:59:59Z");
-		var minutesremaining = Math.floor((daterequired.getTime() - now) / 1000 / 60);
-		var hoursremaining = Math.floor(minutesremaining / 60);
-		minutesremaining = minutesremaining - (hoursremaining * 60);
-		var daysremaining = Math.floor(hoursremaining / 24); 
-		hoursremaining = hoursremaining - (daysremaining * 24);
-		
-		var newelem = document.createElement('div');
-		newelem.className = "task";
-		newelem.id = "task-" + x[j].id;
-		innerhtml = "<span>" + x[j].description + "</span> Required in:" + daysremaining + "days " + hoursremaining + "hours " + minutesremaining + "minutes ";
-		var sumbitbutton = "block";
-		if(x[j].evidence == 1){
-			innerhtml += "File Upload: <input id='taskevidence-" + x[j].id + "' type='file' onchange='encodeImageFileAsURL(" + x[j].id + ")' /><input id='base64image-" + x[j].id + "' style='display:none;' /><button id='btnUploadImgur-" + x[j].id + "' onclick='imgurUpload(" + x[j].id  + ")'>Upload Image</button><input id='imageURL-" + x[j].id + "' style='display:none;' disabled='disabled' />"
-			sumbitbutton = "none";
+	if(x.length > 0){
+		for (var j=0; j<x.length; j++){
+			var requiredby = x[j].requiredby + ".";
+			var yearreq = requiredby.substring(0, 4);
+			var monthreq = requiredby.substring(4, 6);
+			var dayreq = requiredby.substring(6, 8);
+			var daterequired = new Date(yearreq + "-" + monthreq + "-" + dayreq + "T23:59:59Z");
+			var minutesremaining = Math.floor((daterequired.getTime() - now) / 1000 / 60);
+			var hoursremaining = Math.floor(minutesremaining / 60);
+			minutesremaining = minutesremaining - (hoursremaining * 60);
+			var daysremaining = Math.floor(hoursremaining / 24); 
+			hoursremaining = hoursremaining - (daysremaining * 24);
+			
+			var newelem = document.createElement('div');
+			newelem.className = "task";
+			newelem.id = "task-" + x[j].id;
+			var innerhtml = "";
+			if(x[j].new == 1){ 
+				innerhtml += "<span>** new task **</span><br />"
+			}
+			innerhtml += "<span><q>" + x[j].description + "</q></span><br /> Required in: " + daysremaining + " days " + hoursremaining + " hours " + minutesremaining + " minutes<br />";
+			var sumbitbutton = "block";
+			if(x[j].evidence == 1){
+				innerhtml += "File Upload: <input id='taskevidence-" + x[j].id + "' type='file' onchange='encodeImageFileAsURL(" + x[j].id + ")' /><input id='base64image-" + x[j].id + "' style='display:none;' /><button id='btnUploadImgur-" + x[j].id + "' onclick='imgurUpload(" + x[j].id  + ")'>Upload Image</button><input id='imageURL-" + x[j].id + "' style='display:none;' disabled='disabled' /><br / >"
+				sumbitbutton = "none";
+			}
+			innerhtml += "Answer: <input id='taskanswer-" + x[j].id + "' /><br />"
+			
+			innerhtml += "<button id='sumbittask-" + x[j].id + "' onclick='Post(\"submitanswer\", \"" + x[j].id + "\")' style='display:" + sumbitbutton + ";'>submit answer</button><hr />"
+			newelem.innerHTML = innerhtml;
+			taskshowarea.appendChild(newelem);
 		}
-		innerhtml += "Answer: <input id='taskanswer-" + x[j].id + "' />"
-		if(x[j].new == 1){ 
-			innerhtml += "<span>** new task **</span>"
-		}
-		
-		innerhtml += "<button id='sumbittask-" + x[j].id + "' onclick='Post(\"submitanswer\", \"" + x[j].id + "\")' style='display:" + sumbitbutton + ";'>submit answer</button>"
-		newelem.innerHTML = innerhtml;
-		taskshowarea.appendChild(newelem);
 	}
+	if(taskshowarea.innerHTML == ""){taskshowarea.innerHTML = "All tasks complete, congrats.";}
 }
 
 function encodeImageFileAsURL(id) {
@@ -323,10 +379,34 @@ function imgurUpload(id) {
 				document.getElementById("taskevidence-" + id).style.display = "none";
 				document.getElementById("btnUploadImgur-" + id).style.display = "none";
 				document.getElementById("sumbittask-" + id).style.display = "block";
-				document.getElementById("imageURL-" + id).style.display = "block";
+				document.getElementById("imageURL-" + id).style.display = "block";				
+				ChangeDisplayType('myModal', 'none');
 			})
 			.catch(function (error) {
-				alert("Request Failed");
+				Message("Request Failed");
 			});		
 	}
+}
+
+function Message(text, type) {	
+	type = type || "";
+	var container = document.getElementById('pModalMessage');
+	container.innerHTML = "";
+	switch(type) {
+		case "Link":
+			var newelemlink = document.createElement('a');
+			newelemlink.href = text;
+			newelemlink.target = "_blank";
+			newelemlink.innerHTML = text;
+			container.appendChild(newelemlink);
+			break;
+		default:
+			container.innerHTML = text;
+	}
+	ChangeDisplayType('myModal', 'block');
+}
+
+function ChangeDisplayType(id, displaytype) {
+	var modal = document.getElementById(id);
+	modal.style.display = displaytype;
 }
