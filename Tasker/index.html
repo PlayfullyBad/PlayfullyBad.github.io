@@ -5,38 +5,56 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="default.js"></script>
+		<link rel="stylesheet" href="default.css">
 	</head>
 	<body>
 		<div id="warning">
-			PROTPTYPE - NOTE ALL LOGIN DETAILS ARE STORE ON GOOGLE DRIVE, THIS IS NOT SECURE! PLEASE USE DIFFERENT PASSWORDS FOR EVERY SITE YOU USE, ESPECIALLY THIS ONE.
-			<button onclick="document.getElementById('login').style.display='block'">Accept</button>
+			NOTE ALL LOGIN DETAILS ARE STORE ON GOOGLE DRIVE, THIS IS NOT SECURE! PLEASE USE DIFFERENT PASSWORDS FOR EVERY SITE YOU USE, ESPECIALLY THIS ONE.
+			<button onclick="document.getElementById('login').style.display='block';document.getElementById('warning').style.display='none'">Accept</button>
 		</div>
 		<div id="login" style="display:none;">
-			Login Form Admin<br />
-			Form Name: <input id="adminFormName"><br />
-			Form Password: <input id="adminFormPassword" type="password"><br />
-			<button onclick="Post('admin')">Submit</button><br /><br />
-			Login Form Admin (Check User Progress)<br />
-			User Name: <input id="adminUserName"><br />
-			Form Name: <input id="adminFormName2"><br />
-			Form Password: <input id="adminFormPassword2" type="password"><br />
-			<button onclick="Post('admincheck')">Submit</button><br /><br />
-			Login Form User<br />
-			Form Name: <input id="userFormName"><br />
-			User Name: <input id="userName"><br />
-			User Password: <input id="userPassword" type="password"><br />
-			<button onclick="Post('user')">Submit</button><br /><br />
-			Create New Form<br />
-			Form Name: <input id="newAdminFormName"><br />
-			Form Password: <input id="newAdminFormPassword" type="password"><br />
-			Confirm Form Password: <input id="newAdminFormPasswordConfirm" type="password"><br />
-			<button onclick="Post('newform')">Submit</button><br /><br />
-			Create New Form User<br />
-			Form Name: <input id="FormName"><br />
-			User Name: <input id="newUserName"><br />
-			User Password: <input id="newUserPassword" type="password"><br />
-			Confirm User Password: <input id="newUserPasswordConfirm" type="password"><br />
-			<button onclick="Post('newuser')">Submit</button><br /><br />
+			<div class="tabs">
+				<button onclick="showTab(0, 'tab')">Form Admin</button>
+				<button onclick="showTab(1, 'tab')">Check Progress</button>
+				<button onclick="showTab(2, 'tab')">User</button>
+				<button onclick="showTab(3, 'tab')">New Form</button>
+				<button onclick="showTab(4, 'tab')">New User</button>
+			</div>
+			<div id="loginAdmin" class="tab">
+				<h3>Login Form Admin</h3>
+				<label>Form Name:</label><input id="adminFormName">
+				<label>Form Password:</label><input id="adminFormPassword" type="password">
+				<hr /><button onclick="Post('admin')">Submit</button>
+			</div>
+			<div id="loginAdminProgress" class="tab">
+				<h3>Login Form Admin (Check User Progress)</h3>
+				<label>User Name:</label><input id="adminUserName">
+				<label>Form Name:</label><input id="adminFormName2">
+				<label>Form Password:</label><input id="adminFormPassword2" type="password">
+				<hr /><button onclick="Post('admincheck')">Submit</button>
+			</div>
+			<div id="loginUser" class="tab">
+				<h3>Login Form User</h3>
+				<label>Form Name:</label><input id="userFormName">
+				<label>User Name:</label><input id="userName">
+				<label>User Password:</label><input id="userPassword" type="password">
+				<hr /><button onclick="Post('user')">Submit</button>
+			</div>
+			<div id="loginNewForm" class="tab">
+				<h3>Create New Form</h3>
+				<label>Form Name:</label><input id="newAdminFormName">
+				<label>Form Password:</label><input id="newAdminFormPassword" type="password">
+				<label>Confirm Form Password:</label><input id="newAdminFormPasswordConfirm" type="password">
+				<hr /><button onclick="Post('newform')">Submit</button>
+			</div>
+			<div id="loginNewUser" class="tab">
+				<h3>Create New Form User</h3>
+				<label>Form Name:</label><input id="FormName">
+				<label>User Name:</label><input id="newUserName">
+				<label>User Password:</label><input id="newUserPassword" type="password">
+				<label>Confirm User Password:</label><input id="newUserPasswordConfirm" type="password">
+				<hr /><button onclick="Post('newuser')">Submit</button>
+			</div>
 		</div>
 		<input type="hidden" id="formID" style="display:none" />
 		<input type="hidden" id="userID" style="display:none" />
@@ -44,10 +62,18 @@
 		<input type="hidden" id="adminPass" style="display:none" />
 		<div id="userTasks" style="display:none;"></div>
 		<div id="newtask" style="display:none;">
-			Task Description <textarea id="newTaskDescription"></textarea><br />
-			Required within <input id="newTaskTimeLimit" type="number" min="1" step="1" /> days of viewing.<br />
-			Photo Proof Needed? <input id="newtaskProof" type="checkbox" />
-			<button onclick="Post('newtask')">Submit</button><br /><br />
+			<h3>Create New Task</h3>
+			Task Description <textarea id="newTaskDescription" style="width:100%;" rows="5"></textarea>
+			Required within <input id="newTaskTimeLimit" type="number" min="1" step="1" style="width:50px;" /> days of viewing.<br />
+			Photo Proof Needed? <input id="newtaskProof" type="checkbox" /> *this forces an imgur upload as proof so will be public.
+			<hr />
+			<button onclick="Post('newtask')">Submit</button>
+		</div>
+		<div id="myModal" class="modal">			
+			<div class="modal-content">
+				<span class="close" onclick="ChangeDisplayType('myModal', 'none')">&times;</span>
+				<p id="pModalMessage">Loading...</p>
+			</div>
 		</div>
 	</body>
 </html>
