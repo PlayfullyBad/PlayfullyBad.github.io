@@ -23,9 +23,10 @@ function showTab(id, tabsName){
 	}
 }
 
-function Post(x, id){ 
+function Post(x, id, id2){ 
 	Message("Loading...");
 	id = id || ""
+	id2 = id2 || ""
 	var post = {};
 	var accept = "text/plain";
 	switch(x){
@@ -43,6 +44,29 @@ function Post(x, id){
 				Message("passwords don't match.")
 				return;
 			}			
+			break;
+		case "renewTask":
+			var FormName = document.getElementById('formID').value;
+			var user = document.getElementById('userID').value;
+			var pass = document.getElementById('adminPass').value;
+			post = JSON.stringify({
+				posttype: "RenewTask",
+				FormName: FormName,
+				UserName: user,
+				FormPassword: pass,
+				TaskID: id
+			})		
+			break;
+		case "toggleTask":
+			var FormName = document.getElementById('formID').value;
+			var pass = document.getElementById('adminPass').value;
+			post = JSON.stringify({
+				posttype: "ToggleTask",
+				FormName: FormName,
+				FormPassword: pass,
+				TaskID: id,
+				Enabled: id2
+			})		
 			break;
 		case "user":
 			accept = "application/json";
@@ -153,6 +177,9 @@ function Post(x, id){
 						case "submitanswer":
 							deleteNode("task-" + id);
 							break;
+						case "toggleTask":
+							toggleTask(id, id2);
+							break;
 						case "newtask":
 							var array = [];
 							var y = {};
@@ -229,6 +256,19 @@ function deleteNode(id){
 	document.getElementById(id).parentNode.removeChild(document.getElementById(id));
 }
 
+function toggleTask(id, id2){
+	var x = document.getElementById("toggle-" + id);
+	var innertext = "Enable";
+	var toggleID = 1;
+	if(id2 == 1){
+		innertext = "Disable";
+		toggleID = 0;
+	}
+	var click = "Post('toggleTask', '" + id + "', '" + toggleID + "')";
+	x.setAttribute("onclick", click);
+	x.innerHTML = innertext;
+}
+
 function formadmin(x){
 	document.getElementById('formID').value = document.getElementById('adminFormName').value;
 	document.getElementById('adminPass').value = document.getElementById('adminFormPassword').value;
@@ -249,8 +289,11 @@ function formadmin(x){
 		
 		var newelem = document.createElement('div');
 		newelem.className = "task";
-		newelem.id = "taskList-" + x[j].id;
-		innerhtml = "<h4>Task " + x[j].id + "</h4><span>" + x[j].description + "</span><hr />Required within " + x[j].requiredby + " days";
+		newelem.id = "taskList-" + x[j].id;		
+		var enabledText = "Enable";
+		var enablechange = 1;
+		if(x[j].enabled){enabledText = "Disable"; enablechange = 0;}
+		innerhtml = "<h4>Task " + x[j].id + " <button onclick='Post(\"renewTask\", \"" + x[j].id + "\")'>Renew Task For All</button> <button id='toggle-" + x[j].id + "' onclick='Post(\"toggleTask\", \"" + x[j].id + "\", \"" + enablechange + "\")'>" + enabledText + "</button></h4><span>" + x[j].description + "</span><hr />Required within " + x[j].requiredby + " days";
 		if(x[j].evidence == "1"){
 			innerhtml += " with imgur photo proof required."
 		}
