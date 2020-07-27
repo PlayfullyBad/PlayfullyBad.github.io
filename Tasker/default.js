@@ -174,6 +174,9 @@ function Post(x, id, id2){
 				.then(response=>response.text())
 				.then(function (data) {
 					switch(x){
+						case "renewTask":
+							deleteNode("renew-" + id);							
+							break;
 						case "submitanswer":
 							deleteNode("task-" + id);
 							break;
@@ -293,7 +296,7 @@ function formadmin(x){
 		var enabledText = "Enable";
 		var enablechange = 1;
 		if(x[j].enabled){enabledText = "Disable"; enablechange = 0;}
-		innerhtml = "<h4>Task " + x[j].id + " <button onclick='Post(\"renewTask\", \"" + x[j].id + "\")'>Renew Task For All</button> <button id='toggle-" + x[j].id + "' onclick='Post(\"toggleTask\", \"" + x[j].id + "\", \"" + enablechange + "\")'>" + enabledText + "</button></h4><span>" + x[j].description + "</span><hr />Required within " + x[j].requiredby + " days";
+		innerhtml = "<h4>Task " + x[j].id + " <button id='renew-" + x[j].id + "' onclick='Post(\"renewTask\", \"" + x[j].id + "\")'>Renew Task For All</button> <button id='toggle-" + x[j].id + "' onclick='Post(\"toggleTask\", \"" + x[j].id + "\", \"" + enablechange + "\")'>" + enabledText + "</button></h4><span>" + x[j].description + "</span><hr />Required within " + x[j].requiredby + " days";
 		if(x[j].evidence == "1"){
 			innerhtml += " with imgur photo proof required."
 		}
@@ -330,7 +333,7 @@ function trackuser(x){
 		if(x[j].finished == ""){
 			innerhtml += " Required in: " + daysremaining + " days " + hoursremaining + " hours " + minutesremaining + " minutes "
 		} else { 
-			innerhtml += " Completed On: " + x[j].finished + " Deadline Was: " + x[j].deadline + " <span>Answer: " + x[j].answer + "</span>";
+			innerhtml += " Completed On: " + x[j].finished + " Deadline Was: " + x[j].deadline + " <span>Answer: " + x[j].answer + "</span> <button id='renew-" + x[j].id + "' onclick='Post(\"renewTask\", \"" + x[j].id + "\")'>Renew Task</button>";
 		}
 		if(x[j].proof != ""){
 			innerhtml += " <span>Proof: <a href='" + x[j].proof + "' target='_blank'>" + x[j].proof + "</a></span>";
