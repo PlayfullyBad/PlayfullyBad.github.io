@@ -36,6 +36,11 @@ function Post(x, id){
 		})
 		.then(response=>response.text())
 		.then(function (data) {
+			if(data == "Email Sent."){				
+				document.getElementById('EmailSubject').value = "";
+				document.getElementById('EmailSuggestion').value = "";
+				document.getElementById('reCaptureResponse').value = "";	
+			}
 			alert(data);
 		})
 		.catch(function (error) {
