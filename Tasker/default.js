@@ -157,7 +157,7 @@ function Post(x, id, id2){
 	}
 	
 	var jsonString = JSON.stringify(post);
-	const proxyurl = "https://cors-anywhere.herokuapp.com/";
+	const proxyurl = '';//"https://cors-anywhere.herokuapp.com/";
 	var fullurl = proxyurl + 'https://script.google.com/macros/s/AKfycbxE1tslUeHyhtWBuN8e7z8tAbsgMBfrSHdqynu3Wq2p1TmGR0aH/exec';
 		if(accept == "text/plain"){
 			fetch(fullurl, {
@@ -168,6 +168,7 @@ function Post(x, id, id2){
 					'Accept': accept,
 					'Content-type': 'application/json'//'application/x-www-form-urlencoded; charset=UTF-8'
 					},
+		mode: 'cors',
 				body: post
 				})
 				//.then(json)
@@ -223,6 +224,7 @@ function Post(x, id, id2){
 					'Accept': accept,
 					'Content-type': 'application/json'//'application/x-www-form-urlencoded; charset=UTF-8'
 				},
+		mode: 'cors',
 				body: post
 				})
 				//.then(json)
@@ -403,7 +405,7 @@ function imgurUpload(id) {
 	
 	var elem = document.getElementById("base64image-" + id);
 	if(elem != null){		
-		const proxyurl = "https://cors-anywhere.herokuapp.com/";
+		const proxyurl = '';//"https://cors-anywhere.herokuapp.com/";
 		fetch(proxyurl + 'https://api.imgur.com/3/image', {
 			method: 'post',
 			headers: {
@@ -411,6 +413,7 @@ function imgurUpload(id) {
 				'Accept': 'application/json',
 				'Content-type': 'application/json'//'application/x-www-form-urlencoded; charset=UTF-8'
 			},
+		mode: 'cors',
 			body: JSON.stringify({
 				image:  elem.value,
 				type: 'base64'			
