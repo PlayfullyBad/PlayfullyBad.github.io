@@ -229,7 +229,7 @@ function formatDate(x){
 function imgurUpload() {
 	var imagestring = document.getElementById("base64id").value;
 	var imgurClientId = '9db53e5936cd02f';
-	const proxyurl = "https://cors-anywhere.herokuapp.com/";
+	const proxyurl = '';//"https://cors-anywhere.herokuapp.com/";
 	fetch(proxyurl + 'https://api.imgur.com/3/image', {
 		method: 'post',
 		headers: {
@@ -237,6 +237,7 @@ function imgurUpload() {
 			'Accept': 'application/json',
 			'Content-type': 'application/json'
 		},
+		mode: 'cors',
 		body: JSON.stringify({
 			image:  imagestring.split(',')[1],
 			type: 'base64'			
