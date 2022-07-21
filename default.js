@@ -23,7 +23,7 @@ function Post(x, id){
 			return;
 	}
 	var jsonString = JSON.stringify(post);
-	const proxyurl = "https://cors-anywhere.herokuapp.com/";
+	const proxyurl = '';//"https://cors-anywhere.herokuapp.com/";
 	var fullurl = proxyurl + 'https://script.google.com/macros/s/AKfycbw6DcMNV-SSPqsU000BOrxAhKBo1JCZPFUr6yAUlbNZYFVw2QU/exec';
 	fetch(fullurl, {
 		method: 'post',
@@ -32,6 +32,7 @@ function Post(x, id){
 			'Accept': accept,
 			'Content-type': 'application/json'
 			},
+		mode: 'cors',
 		body: post
 		})
 		.then(response=>response.text())
