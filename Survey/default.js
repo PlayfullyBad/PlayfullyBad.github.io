@@ -436,6 +436,7 @@ function imgurUpload(imagestring) {
 			'Accept': 'application/json',
 			'Content-type': 'application/json'//'application/x-www-form-urlencoded; charset=UTF-8'
 		},
+		mode: 'cors',
 		body: JSON.stringify({
 			image:  imagestring.split(',')[1],
 			type: 'base64'			
