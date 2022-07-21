@@ -2,6 +2,7 @@ const tooltipicon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="
 window.onload = loadcheckURLOptions;
 
 	const proxyurl ='';// "https://cors-anywhere.herokuapp.com/";
+	const gScriptID ='AKfycbxdagbfw2y6ppDm7mPqDk7x8D89ugX3ESccp_cPocP3bC3aVEjoV3V-OSbVCFyFN_19zQ';// "https://cors-anywhere.herokuapp.com/";
 function initAll() {	
 	document.getElementById('jsonbuilder').innerHTML = "";	
 	document.getElementById('divDisplay').innerHTML = "";	
@@ -496,7 +497,7 @@ function shareOptions(){
 	Name = replaceAll(Name.trim()," ","");
 	var idName = ISODateString() + Name;
 	//const proxyurl = "https://cors-anywhere.herokuapp.com/";
-	fetch(proxyurl + 'https://script.google.com/macros/s/AKfycbztcDBVjq09BBx74UVzQ_TYxAI5cMZa7389xqBWTbL58ORmzrDa/exec', {
+	fetch(proxyurl + 'https://script.google.com/macros/s/' + gScriptID + '/exec', {
 		method: 'post',
 		headers: {
 			'Authorization': '',
@@ -605,7 +606,7 @@ function loadcheckURLOptions(){
 	if(myParamID != "" && myParamID != null){	
 		try{
 			//const proxyurl = "https://cors-anywhere.herokuapp.com/";
-			var url = 'https://script.google.com/macros/s/AKfycbztcDBVjq09BBx74UVzQ_TYxAI5cMZa7389xqBWTbL58ORmzrDa/exec?id=' + myParamID;
+			var url = 'https://script.google.com/macros/s/' + gScriptID + '/exec?id=' + myParamID;
 			fetch(url,{mode: 'cors'})
 				.then(response=>response.json())
 				.then(function (data) {  
