@@ -503,6 +503,7 @@ function shareOptions(){
 			'Accept': 'text/plain',
 			'Content-type': 'application/json'//'application/x-www-form-urlencoded; charset=UTF-8'
 		},
+		mode: 'cors',		
 		body: JSON.stringify({
 			id: idName,
 			survey: base64Options,
@@ -605,7 +606,7 @@ function loadcheckURLOptions(){
 		try{
 			//const proxyurl = "https://cors-anywhere.herokuapp.com/";
 			var url = 'https://script.google.com/macros/s/AKfycbztcDBVjq09BBx74UVzQ_TYxAI5cMZa7389xqBWTbL58ORmzrDa/exec?id=' + myParamID;
-			fetch(url)
+			fetch(url,{mode: 'cors'})
 				.then(response=>response.json())
 				.then(function (data) {  
 					myParam = data.survey;
