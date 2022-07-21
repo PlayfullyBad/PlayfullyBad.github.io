@@ -502,7 +502,7 @@ function shareOptions(){
 		headers: {
 			'Authorization': '',
 			'Accept': 'text/plain',
-			'Content-type': 'application/json'//'application/x-www-form-urlencoded; charset=UTF-8'
+			'Content-type': 'text/plain'//'application/x-www-form-urlencoded; charset=UTF-8' //application/json
 		},
 		mode: 'cors',		
 		body: JSON.stringify({
