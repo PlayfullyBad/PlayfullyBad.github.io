@@ -8,8 +8,8 @@
 	--site-colour: #ffffff;
 	--site-colour-second: #303030;
 }
-#CustomShare{
-display:none;}
+/*#CustomShare{
+display:none;}*/
 body {	
 	box-sizing: border-box;
 	background-color: var(--site-colour);
