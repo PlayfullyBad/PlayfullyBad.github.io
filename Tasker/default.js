@@ -166,7 +166,7 @@ function Post(x, id, id2){
 				headers: {
 					'Authorization': '',
 					'Accept': accept,
-					'Content-type': 'text/plain'//'application/x-www-form-urlencoded; charset=UTF-8'
+					'Content-type': 'application/json'//'application/x-www-form-urlencoded; charset=UTF-8'
 					},
 		followRedirects: true,
 		//mode: 'cors',
