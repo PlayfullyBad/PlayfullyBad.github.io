@@ -162,7 +162,7 @@ function Post(x, id, id2){
 		if(accept == "text/plain"){
 			fetch(fullurl, {
 				method: 'post',
-				mode: 'no-cors',
+				//mode: 'no-cors',
 				headers: {
 					'Authorization': '',
 					'Accept': accept,
@@ -219,7 +219,7 @@ function Post(x, id, id2){
 		} else if(accept == "application/json"){
 			fetch(fullurl, {
 				method: 'post',
-				mode: 'no-cors',
+				//mode: 'no-cors',
 				headers: {
 					'Authorization': '',
 					'Accept': accept,
