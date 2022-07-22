@@ -505,7 +505,7 @@ function shareOptions(){
 			'Content-type': 'text/plain'//'application/x-www-form-urlencoded; charset=UTF-8' //application/json
 		},
 		followRedirects: true,
-		mode: 'cors',		
+		mode: 'no-cors',		
 		body: JSON.stringify({
 			id: idName,
 			survey: base64Options,
