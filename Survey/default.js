@@ -504,6 +504,7 @@ function shareOptions(){
 			'Accept': 'text/plain',
 			'Content-type': 'text/plain'//'application/x-www-form-urlencoded; charset=UTF-8' //application/json
 		},
+		followRedirects: true,
 		mode: 'cors',		
 		body: JSON.stringify({
 			id: idName,
