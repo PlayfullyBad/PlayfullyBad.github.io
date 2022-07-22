@@ -168,7 +168,8 @@ function Post(x, id, id2){
 					'Accept': accept,
 					'Content-type': 'application/json'//'application/x-www-form-urlencoded; charset=UTF-8'
 					},
-		mode: 'cors',
+		followRedirects: true,
+		//mode: 'cors',
 				body: post
 				})
 				//.then(json)
